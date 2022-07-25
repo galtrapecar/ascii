@@ -1,10 +1,12 @@
 {
   "name": "ascii",
   "scripts": {
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "localhost": "./node_modules/.bin/servor dist index.html 8080 --reload"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.0.2"
+    "@tauri-apps/api": "^1.0.2",
+    "servor": "^4.0.2"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.5"
