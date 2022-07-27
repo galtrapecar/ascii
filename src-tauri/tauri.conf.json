@@ -4,7 +4,8 @@
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
     "devPath": "http://localhost:8080/",
-    "distDir": "../dist"
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "ascii",
@@ -58,9 +59,12 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "ascii",
-        "width": 800
+        "title": "k-lax",
+        "width": 800,
+        "decorations": false,
+        "transparent": true
       }
-    ]
+    ],
+    "macOSPrivateApi": true
   }
 }

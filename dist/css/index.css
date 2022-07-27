@@ -1,18 +1,163 @@
-:root {
-    --background-color: #262626;
-  }
+@font-face {
+    font-family: tex;
+    src: url(../fonts/texgyrecursor-regular.otf);
+    font-weight: normal;
+    font-style: none;
+}
 
-  html,
-  body {
+@font-face {
+    font-family: tex;
+    src: url(../fonts/texgyrecursor-italic.otf);
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tex;
+    src: url(../fonts/texgyrecursor-bold.otf);
+    font-weight: bold;
+    font-style: none;
+}
+
+@font-face {
+    font-family: tex;
+    src: url(../fonts/texgyrecursor-bolditalic.otf);
+    font-weight: bold;
+    font-style: italic;
+}
+
+:root {
+    --window-border-radius:   9px;
+    --font-family:            tex;
+    --font-color:           #fff;
+    --background-color:     #252526;
+    --accent-color:         #1C1C1D;
+    --gradient-blue:        #42E8F5;
+    --gradient-yellow:      #F2F5B4;
+    --gradient-pink:        #F56ED5;
+    --gradient-purple:      #8144F5;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color);
-  }
 
-  body {
+    font-family: var(--font-family);
+}
+
+app {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+    flex-direction: column;
+    gap: 50px;
+    border-radius: var(--window-border-radius);
+    background-color: var(--background-color);
+}
+
+#title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    user-select: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0);
+
+    background: linear-gradient(45deg, var(--gradient-blue), var(--gradient-pink), var(--gradient-purple), var(--gradient-yellow));
+    background-size: 600% 100%;
+    animation: gradient 16s linear infinite;
+    animation-direction: alternate;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+start-button {
+    position: relative;
+    padding: 12px 60px;
+    display: grid;
+    place-content: center;
+    border-radius: 4px;
+
+    color: var(--font-color);
+    user-select: none;
+    cursor: pointer;
+
+    background: var(--accent-color);
+    transition: all .4s;
+    -webkit-transition: all .4s;
+}
+
+start-button::after {
+    content: 'START';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    border-radius: inherit;
+
+    color: inherit;
+
+    opacity: 0;
+    background: linear-gradient(45deg, var(--gradient-blue), var(--gradient-pink), var(--gradient-purple), var(--gradient-yellow));
+    background-size: 600% 100%;
+    animation: gradient 16s linear infinite;
+    animation-direction: alternate;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+
+start-button:hover {
+    transform-origin: 50% 90%;
+    transform: scale(1.1);
+
+    transition: all .4s;
+    -webkit-transition: all .4s;
+
+    box-shadow: 0px 7px 17px 5px rgba(255,255,255, .07);
+    -webkit-box-shadow: 0px 7px 17px 5px rgba(255,255,255, .07);
+}
+
+start-button:hover::after {
+    opacity: 1;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% }
+    100% { background-position: 100% }
+}
+
+.titlebar {
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    border-radius: var(--window-border-radius);
+    background: var(--background-color);
+    user-select: none;
+}
+
+.titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.titlebar-button:hover {
+    background: #5bbec3;
+}
