@@ -4,8 +4,11 @@
 )]
 
 use std::io;
+use std::io::BufReader;
+use std::io::prelude::*;
 use std::env;
 use std::path::Path;
+use std::fs::File;
 use std::fs;
 use std::thread;
 use tauri::Manager;
@@ -17,7 +20,6 @@ struct Payload {
   position: MousePosition,
 }
 
-#[tauri::command]
 fn make_keylogger_thread(window: Window) {
   let thread_handle = thread::spawn(move || {
     println!("Spawned KeyLogger Thread.");
@@ -41,6 +43,17 @@ fn make_keylogger_thread(window: Window) {
   });
 }
 
+#[tauri::command]
+fn get_programming_languages() {
+  // let path = Path::new("./klax/");
+  // assert!(env::set_current_dir(&path).is_ok());
+  // let file = File::open("config.json")?;
+  // let mut buf_reader = BufReader::new(file);
+  // let mut contents = String::new();
+  // buf_reader.read_to_string(&mut contents);
+  // return Ok((contents));
+}
+
 fn main() {
   tauri::Builder::default()
     .setup(|app| {
@@ -53,6 +66,7 @@ fn main() {
 
       Ok(())
     })
+    .invoke_handler(tauri::generate_handler![get_programming_languages])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

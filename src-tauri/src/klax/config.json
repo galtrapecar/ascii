@@ -1,0 +1,24 @@
+{
+    "settings": {
+
+    },
+    "programming_languages:": {
+        "javascript": {
+            "name": "JavaScript",
+            "icon": "javascript.svg",
+            "comment_symbol": "//" 
+        },
+        "css": {
+            "name": "CSS",
+            "icon": "css.svg",
+            "comment_symbol": "/*",
+            "closing_symbol": "*/"
+        },
+        "html": {
+            "name": "HTML",
+            "icon": "html.svg",
+            "comment_symbol": "<!--",
+            "closing_symbol": "-->" 
+        }
+    }
+}
