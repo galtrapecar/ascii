@@ -8,7 +8,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "ascii",
+    "productName": "klax",
     "version": "0.1.0"
   },
   "tauri": {
@@ -59,7 +59,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "k-lax",
+        "title": "klax",
         "width": 800,
         "decorations": false,
         "transparent": true

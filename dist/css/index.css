@@ -48,6 +48,32 @@ body {
     font-family: var(--font-family);
 }
 
+.titlebar {
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    border-radius: var(--window-border-radius);
+    background: var(--background-color);
+    user-select: none;
+}
+
+.titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.titlebar-button:hover {
+    background: #5bbec3;
+}
+
 app {
     width: 100%;
     height: 100%;
@@ -136,28 +162,73 @@ start-button:hover::after {
     100% { background-position: 100% }
 }
 
-.titlebar {
-    position: fixed;
+hotkey-menu {
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--background-color);
+    border-radius: var(--window-border-radius);
+}
+
+.list-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.list-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.list-item {
+    position: relative;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px var(--accent-color) solid;
+    
+    cursor: pointer;
+    color: var(--font-color);
+    transition: all .4s;
+    -webkit-transition: all .4s;
+}
+
+.list-item::after {
+    content: attr(data-title);
+    position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 30px;
-    border-radius: var(--window-border-radius);
-    background: var(--background-color);
-    user-select: none;
-}
-
-.titlebar-button {
-    display: inline-flex;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: grid;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+    padding: 0 25px;
+
+    color: inherit;
+
+    opacity: 0;
+    background: linear-gradient(45deg, var(--gradient-blue), var(--gradient-pink), var(--gradient-purple), var(--gradient-yellow));
+    background-size: 600% 100%;
+    animation: gradient 16s linear infinite;
+    animation-direction: alternate;
+    transition: all .3s;
+    -webkit-transition: all .3s;
 }
 
-.titlebar-button:hover {
-    background: #5bbec3;
+.list-item:hover::after {
+    opacity: 1;
+}
+
+.list-item:hover {
+    transform: scale(1.1);
+}
+
+.list-item p {
+    user-select: none;
+    padding: 0 25px;
 }
