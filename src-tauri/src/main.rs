@@ -3,17 +3,13 @@
   windows_subsystem = "windows"
 )]
 
-use std::io;
-use std::io::BufReader;
-use std::io::prelude::*;
 use std::env;
-use std::path::Path;
-use std::fs::File;
+use std::path::{Path};
+use path_absolutize::*;
 use std::fs;
 use std::thread;
-use tauri::Manager;
-use tauri::Window;
-use device_query::{DeviceQuery, DeviceEvents, DeviceState, Keycode, MouseState, MousePosition};
+use tauri::{Manager, Window};
+use device_query::{DeviceQuery, DeviceState, Keycode, MouseState, MousePosition};
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -21,13 +17,13 @@ struct Payload {
 }
 
 fn make_keylogger_thread(window: Window) {
-  let thread_handle = thread::spawn(move || {
+  let _thread_handle = thread::spawn(move || {
     println!("Spawned KeyLogger Thread.");
     let mut in_combination = false;
     let device_state = DeviceState::new();
     loop {
       let mouse: MouseState = device_state.get_mouse();
-      if mouse.button_pressed[1] && in_combination {
+      if mouse.button_pressed[3] && in_combination {
         window.emit("kill_hotkey_menu", Payload { position: device_state.get_mouse().coords }).unwrap();
         in_combination = false;
       }
@@ -44,23 +40,26 @@ fn make_keylogger_thread(window: Window) {
 }
 
 #[tauri::command]
-fn get_programming_languages() {
-  // let path = Path::new("./klax/");
-  // assert!(env::set_current_dir(&path).is_ok());
-  // let file = File::open("config.json")?;
-  // let mut buf_reader = BufReader::new(file);
-  // let mut contents = String::new();
-  // buf_reader.read_to_string(&mut contents);
-  // return Ok((contents));
+fn get_programming_languages() -> std::string::String {
+  let path = Path::new("src/klax");
+  let cwd = env::current_dir().unwrap();
+  path.absolutize_from(&cwd).unwrap().to_str().unwrap();
+  let _ignore = env::set_current_dir(&path);
+  println!("{}", env::current_dir().unwrap().display());
+  let contents = fs::read_to_string("config.json").expect("Something went wrong reading config.json.");
+  return contents;
 }
 
 fn main() {
   tauri::Builder::default()
     .setup(|app| {
+      let cwd = env::current_dir().unwrap();
       // Create klax/ directory in system root if it doesn't exist.
       let root = Path::new("/");
       assert!(env::set_current_dir(&root).is_ok());
       fs::create_dir_all("klax")?;
+      // Go back to program's working directory.
+      assert!(env::set_current_dir(&cwd).is_ok());
 
       make_keylogger_thread(app.get_window("main").unwrap());
 

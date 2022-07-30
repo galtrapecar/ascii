@@ -3,10 +3,9 @@ const WebView = window.__TAURI__.window.WebView
 const WebviewWindow = window.__TAURI__.window.WebviewWindow
 const PhysicalPosition = window.__TAURI__.window.PhysicalPosition
 const listen = window.__TAURI__.event.listen
+const invoke = window.__TAURI__.invoke
 
 document.addEventListener("DOMContentLoaded", async () => {
-    /** Points to spawned webview window to kill on hotkey end. */
-    let hotkey_menu
     /**
      * Listen for hotkey command defined in `src/main.rs`.
      * Spawns a webview window next to cursor.
