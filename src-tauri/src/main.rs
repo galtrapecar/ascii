@@ -5,7 +5,7 @@
 
 use std::env;
 use std::path::{Path};
-use path_absolutize::*;
+use std::process::{Command};
 use std::fs;
 use std::thread;
 use tauri::{Manager, Window};
@@ -16,7 +16,38 @@ struct Payload {
   position: MousePosition,
 }
 
-fn make_keylogger_thread(window: Window) {
+#[tauri::command]
+fn klax_start(font: String, symbol: String, closing: String) {
+  let command = "/klax/python/index/index.exe";
+  let _output = if closing == "" {
+    Command::new("cmd")
+            .arg("/C")
+            .arg(command)
+            .arg(font)
+            .arg(symbol.clone())
+            .spawn()
+            .expect("command failed to start");
+  } else {
+    Command::new("cmd")
+            .arg("/C")
+            .arg(command)
+            .arg(font)
+            .arg("\"".to_owned() + &symbol.clone() + "\"")
+            .arg("\"".to_owned() + &closing.clone() + "\"")
+            .spawn()
+            .expect("command failed to start");
+  };
+}
+
+#[tauri::command]
+fn get_programming_languages() -> std::string::String {
+  let path = Path::new("/klax");
+  let _ignore = env::set_current_dir(&path);
+  let contents = fs::read_to_string("config.json").expect("Something went wrong reading config.json.");
+  return contents;
+}
+
+fn make_hotkey_thread(window: Window) {
   let _thread_handle = thread::spawn(move || {
     println!("Spawned KeyLogger Thread.");
     let mut in_combination = false;
@@ -24,12 +55,12 @@ fn make_keylogger_thread(window: Window) {
     loop {
       let mouse: MouseState = device_state.get_mouse();
       if mouse.button_pressed[3] && in_combination {
-        window.emit("kill_hotkey_menu", Payload { position: device_state.get_mouse().coords }).unwrap();
+        // DO SOMETHING
         in_combination = false;
       }
       if in_combination { continue; }
       let keys: Vec<Keycode> = device_state.get_keys();
-      if keys.contains(&Keycode::LShift) && 
+      if keys.contains(&Keycode::LShift) &&
          keys.contains(&Keycode::LAlt) && 
          keys.contains(&Keycode::X) {
         window.emit("spawn_hotkey_menu", Payload { position: device_state.get_mouse().coords }).unwrap();
@@ -37,17 +68,6 @@ fn make_keylogger_thread(window: Window) {
       }
     }
   });
-}
-
-#[tauri::command]
-fn get_programming_languages() -> std::string::String {
-  let path = Path::new("src/klax");
-  let cwd = env::current_dir().unwrap();
-  path.absolutize_from(&cwd).unwrap().to_str().unwrap();
-  let _ignore = env::set_current_dir(&path);
-  println!("{}", env::current_dir().unwrap().display());
-  let contents = fs::read_to_string("config.json").expect("Something went wrong reading config.json.");
-  return contents;
 }
 
 fn main() {
@@ -61,11 +81,13 @@ fn main() {
       // Go back to program's working directory.
       assert!(env::set_current_dir(&cwd).is_ok());
 
-      make_keylogger_thread(app.get_window("main").unwrap());
+      let window = app.get_window("main").unwrap();
+
+      make_hotkey_thread(window);
 
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![get_programming_languages])
+    .invoke_handler(tauri::generate_handler![get_programming_languages, klax_start])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
