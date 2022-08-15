@@ -34,8 +34,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             let symbol = CONFIG.programming_languages[list_item.dataset.name.toLowerCase()].comment_symbol;
             let closing = CONFIG.programming_languages[list_item.dataset.name.toLowerCase()].closing_symbol ? CONFIG.programming_languages[list_item.dataset.name.toLowerCase()].closing_symbol : '';
             invoke('klax_start', {font: font, symbol: symbol, closing: closing})
-            emit('hotkey_menu_killed')
+            // emit('hotkey_menu_killed')
             WebviewWindow.getByLabel('hotkey_menu').close()
         })
     });
 })
+
+
+

@@ -90,6 +90,9 @@ app {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 257px;
+    height: 80px;
+    transform: scale(1.7);
 
     user-select: none;
     font-size: 18px;
@@ -100,8 +103,7 @@ app {
     background-size: 600% 100%;
     animation: gradient 16s linear infinite;
     animation-direction: alternate;
-    background-clip: text;
-    -webkit-background-clip: text;
+    clip-path: url(#path);
 }
 
 start-button {
