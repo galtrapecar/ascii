@@ -56,7 +56,10 @@ fn make_hotkey_thread(window: Window) {
       let mouse: MouseState = device_state.get_mouse();
       if mouse.button_pressed[1] && in_combination {
         thread::sleep(time::Duration::from_millis(10));
-        // window.emit("kill_hotkey_menu", Payload { position: device_state.get_mouse().coords }).unwrap();
+        in_combination = false;
+      }
+      if mouse.button_pressed[2] && in_combination {
+        window.emit("kill_hotkey_menu", Payload { position: device_state.get_mouse().coords }).unwrap();
         in_combination = false;
       }
       if in_combination { continue; }
